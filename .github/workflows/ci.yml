@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,18 +30,16 @@ jobs:
         run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line scriptname: CI
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
 
-on:
-  push:
-  pull_request:
-
-jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout
@@ -51,21 +49,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install test dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest
 
-      # If you didn't put pythonpath=["src"] in pyproject.toml,
-      # uncomment the next step and set PYTHONPATH for pytest:
-      # - name: Set PYTHONPATH
-      #   run: echo "PYTHONPATH=src" >> $GITHUB_ENV
-
       - name: Run tests
-        run: pytest
-
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+        env:
+          PYTHONPATH: src
+        run: pytest -q
