@@ -16,3 +16,4 @@ def test_multiply():
 def test_divide():
     calc = Calculator()
     assert calc.divide(9, 4.5) == 2.0
+
